@@ -34,7 +34,7 @@ export const profile: Profile = {
   badge: 'Available for freelance projects',
   location: 'Muzaffarnagar, Uttar Pradesh',
   photo: '',
-  siteUrl: '[SITE_URL]',
+  siteUrl: 'https://nandini-choudhary-portfolio.onrender.com',
   seoDescription:
     'Nandini Choudhary builds mobile-friendly websites and online stores for businesses. Based in Muzaffarnagar, Uttar Pradesh.',
   ogImage: '',
