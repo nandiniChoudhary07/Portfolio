@@ -39,12 +39,6 @@ export interface Highlight {
   value?: string
 }
 
-/** Your current job, shown as a credibility line on the Home page. */
-export interface CurrentRole {
-  role: string
-  company: string
-}
-
 interface ProjectImage {
   /** Path in /public, e.g. '/projects/phoolo-home.webp'. */
   src: string
@@ -84,15 +78,6 @@ export interface Project {
   /** Highlighted on the Home page and linked from the Services page. */
   featured?: boolean
   caseStudy?: CaseStudy
-}
-
-export interface Education {
-  abbreviation: string
-  degree: string
-  level: string
-  institution: string
-  year: string
-  details?: string
 }
 
 export interface Service {

@@ -87,12 +87,6 @@ export const MapPinIcon = (p: IconProps) => (
     <circle cx="12" cy="9.5" r="2.5" />
   </Stroke>
 )
-export const GraduationIcon = (p: IconProps) => (
-  <Stroke {...p}>
-    <path d="M2 9.5 12 5l10 4.5-10 4.5L2 9.5Z" />
-    <path d="M6 11.5v4.5c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5M22 9.5v5" />
-  </Stroke>
-)
 export const FileIcon = (p: IconProps) => (
   <Stroke {...p}>
     <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" />

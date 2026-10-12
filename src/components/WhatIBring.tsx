@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { currentRole, frontendFocus, projects, social } from '../data/portfolio'
+import { frontendFocus, projects, social } from '../data/portfolio'
 import { isSet, whatsappHref } from '../lib/content'
 import {
   ArrowRightIcon,
@@ -85,9 +85,6 @@ export function WhatIBring({ showCards = true, showCta = true }: WhatIBringProps
                 <Card icon={<BriefcaseIcon />} title="Real-World Development">
                   <p className="mt-2 leading-relaxed text-stone-400">
                     Experience working on professional products including Smart Minutes, San of Florida, and Kushals.
-                  </p>
-                  <p className="mt-auto pt-5 font-mono text-xs tracking-wide text-stone-500 uppercase">
-                    {currentRole.role} · {currentRole.company}
                   </p>
                 </Card>
               </li>

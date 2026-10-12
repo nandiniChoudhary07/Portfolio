@@ -1,7 +1,6 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import { About } from './components/About'
 import { Contact } from './components/Contact'
-import { Education } from './components/Education'
 import { Footer } from './components/Footer'
 import { Hero } from './components/Hero'
 import { Navbar } from './components/Navbar'
@@ -16,7 +15,6 @@ const pages: Record<string, ReactNode> = {
   services: <Services />,
   about: <About />,
   projects: <Projects />,
-  education: <Education />,
   contact: <Contact />,
 }
 

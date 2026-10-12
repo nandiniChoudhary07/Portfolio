@@ -13,9 +13,7 @@
  *  • Only write what is true. Remove any bullet that doesn't apply to you.
  */
 import type {
-  CurrentRole,
   Deliverable,
-  Education,
   Highlight,
   NavItem,
   ProcessStep,
@@ -57,7 +55,6 @@ export const navItems: NavItem[] = [
   { id: 'services', label: 'Services' },
   { id: 'projects', label: 'Projects' },
   { id: 'about', label: 'About' },
-  { id: 'education', label: 'Education' },
   { id: 'contact', label: 'Contact' },
 ]
 
@@ -179,7 +176,7 @@ export const processSteps: ProcessStep[] = [
 export const about: { paragraphs: string[]; highlights: Highlight[] } = {
   paragraphs: [
     "I build websites and online stores for businesses. If your customers still have to call or message you to find out what you offer, I can give you a site that shows your work, answers the common questions, and makes it easy to get in touch or place an order.",
-    "I'm a frontend developer at Technoboost, where since February 2025 I've built web and mobile interfaces for client projects using React.js, React Native, JavaScript, and Tailwind CSS. That means the sites I build for you get the same care as professional products: responsive, user-friendly, and consistent across browsers and devices.",
+    "I'm a frontend developer who builds web and mobile interfaces for client projects using React.js, React Native, JavaScript, and Tailwind CSS. That means the sites I build for you get the same care as professional products: responsive, user-friendly, and consistent across browsers and devices.",
     'I also built Phoolo ki ghati on my own, from the first idea to a live online store with payments, customer accounts and an admin panel. Owning a project end to end taught me to think about the whole business, not just the screen in front of me.',
     'I keep things simple: plain language instead of jargon, regular updates while your site is being built, and clean, well-organised code so the site stays easy to change later.',
   ],
@@ -207,9 +204,6 @@ export const about: { paragraphs: string[]; highlights: Highlight[] } = {
     },
   ],
 }
-
-// Shown in the "What I Bring" card on Home.
-export const currentRole: CurrentRole = { role: 'Frontend Developer', company: 'Technoboost' }
 
 // Technology chips on the "Frontend Focused" card. Only list what you actually use.
 export const frontendFocus = ['React', 'JavaScript', 'HTML', 'CSS']
@@ -314,25 +308,5 @@ export const projects: Project[] = [
         'Deployment problems are mostly configuration and infrastructure issues, so I now read the logs and check the env vars first.',
       ],
     },
-  },
-]
-
-export const education: Education[] = [
-  {
-    abbreviation: 'MCA',
-    degree: 'Master of Computer Applications',
-    level: 'Master’s Degree',
-    institution: 'Monad University, Pilkhuwa, Hapur',
-    year: '2023 – 2025',
-    details:
-      'Strong foundation in software development, frontend technologies, and problem solving through academic projects and practical applications.',
-  },
-  {
-    abbreviation: 'BCA',
-    degree: 'Bachelor of Computer Applications',
-    level: 'Bachelor’s Degree',
-    institution: 'Shri Ram Group of Colleges, Muzaffarnagar',
-    year: '2020 – 2023',
-    details: 'Core knowledge of computer fundamentals, programming, and database management.',
   },
 ]

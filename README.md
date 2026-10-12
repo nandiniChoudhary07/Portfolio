@@ -3,7 +3,7 @@
 A fast, static website for freelance web development work, built with **React + TypeScript + Vite + Tailwind CSS**.
 No backend, database, or server: it builds to plain HTML/CSS/JS and deploys to Vercel, Netlify, or GitHub Pages.
 
-Pages: Home, Services, Projects, About, Education, Contact. Each page has its own address (`/#/services`, `/#/contact`, …).
+Pages: Home, Services, Projects, About, Contact. Each page has its own address (`/#/services`, `/#/contact`, …).
 
 ## Quick start
 
@@ -85,8 +85,8 @@ For a user site at `username.github.io`, a plain `npm run build` is enough.
     ├── App.tsx
     ├── main.tsx
     └── components/
-        ├── Navbar.tsx  Hero.tsx  Services.tsx  About.tsx  Education.tsx
-        ├── Contact.tsx  WhatIBring.tsx  Footer.tsx  SocialLinks.tsx
+        ├── Navbar.tsx  Hero.tsx  Services.tsx  About.tsx  Contact.tsx
+        ├── WhatIBring.tsx  Footer.tsx  SocialLinks.tsx
         ├── projects/   Projects.tsx  ProjectCard.tsx  ProjectGallery.tsx  CaseStudy.tsx
         └── ui/         Button.tsx  Icons.tsx  Reveal.tsx  Section.tsx  ThemeToggle.tsx
 ```
