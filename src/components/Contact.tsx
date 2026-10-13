@@ -1,10 +1,11 @@
 import { useState, type FormEvent } from 'react'
-import { profile, social } from '../data/portfolio'
+import { contactSteps, enquiryOptions, profile, SHOW_PRICES, social } from '../data/portfolio'
 import { displayUrl, isSet, whatsappHref } from '../lib/content'
 import { ButtonLink } from './ui/Button'
 import {
   ArrowUpRightIcon,
   GitHubIcon,
+  InstagramIcon,
   LinkedInIcon,
   MailIcon,
   MapPinIcon,
@@ -13,9 +14,7 @@ import {
 } from './ui/Icons'
 import { Reveal } from './ui/Reveal'
 import { Section } from './ui/Section'
-
-const field =
-  'mt-1.5 w-full rounded-xl border border-border bg-bg px-3.5 py-2.5 text-[0.95rem] text-fg placeholder:text-fg-subtle transition-colors hover:border-fg/25'
+import { canSend, fieldClass, SendButtons, sendMessage } from './ui/SendForm'
 
 /**
  * Enquiry form with no backend: it opens WhatsApp or the visitor's email app
@@ -24,25 +23,24 @@ const field =
 function EnquiryForm() {
   const [name, setName] = useState('')
   const [business, setBusiness] = useState('')
+  const [need, setNeed] = useState('')
+  const [budget, setBudget] = useState('')
   const [message, setMessage] = useState('')
-  const hasWhatsapp = !!social.whatsapp
-  const hasEmail = isSet(social.email)
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const via = (event.nativeEvent as SubmitEvent).submitter?.getAttribute('value')
-    const intro = `Hi ${profile.name.split(' ')[0]}, I am ${name.trim()}${business.trim() ? ` from ${business.trim()}` : ''}.`
-    const text = `${intro}\n\n${message.trim()}`
+    // Three short blocks: who they are, what they picked, and anything they typed.
+    const text = [
+      `Hi ${profile.name.split(' ')[0]}, I am ${name.trim()}${business.trim() ? ` from ${business.trim()}` : ''}.`,
+      [`What I need: ${need}`, budget && `Budget: ${budget}`].filter(Boolean).join('\n'),
+      message.trim(),
+    ]
+      .filter(Boolean)
+      .join('\n\n')
 
-    if (via === 'email') {
-      const subject = `Website enquiry${business.trim() ? ` - ${business.trim()}` : ''}`
-      window.location.href = `mailto:${social.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`
-    } else {
-      window.open(whatsappHref(social.whatsapp, text), '_blank', 'noopener')
-    }
+    sendMessage(event, `Website enquiry: ${need}${business.trim() ? ` - ${business.trim()}` : ''}`, text)
   }
 
-  if (!hasWhatsapp && !hasEmail) return null
+  if (!canSend) return null
 
   return (
     <form onSubmit={onSubmit} aria-labelledby="enquiry-title" className="card p-6 sm:p-7">
@@ -55,7 +53,7 @@ function EnquiryForm() {
         <label className="block text-sm font-medium">
           Your name
           <input
-            className={field}
+            className={fieldClass}
             type="text"
             name="name"
             autoComplete="name"
@@ -67,7 +65,7 @@ function EnquiryForm() {
         <label className="block text-sm font-medium">
           Your business <span className="font-normal text-fg-subtle">(optional)</span>
           <input
-            className={field}
+            className={fieldClass}
             type="text"
             name="business"
             autoComplete="organization"
@@ -78,42 +76,39 @@ function EnquiryForm() {
         </label>
         <label className="block text-sm font-medium">
           What do you need?
+          <select className={fieldClass} name="need" required value={need} onChange={(e) => setNeed(e.target.value)}>
+            <option value="" disabled>
+              Choose one
+            </option>
+            {enquiryOptions.needs.map((option) => (
+              <option key={option}>{option}</option>
+            ))}
+          </select>
+        </label>
+        {SHOW_PRICES && (
+          <label className="block text-sm font-medium">
+            Budget <span className="font-normal text-fg-subtle">(optional)</span>
+            <select className={fieldClass} name="budget" value={budget} onChange={(e) => setBudget(e.target.value)}>
+              <option value="">Prefer not to say</option>
+              {enquiryOptions.budgets.map((option) => (
+                <option key={option}>{option}</option>
+              ))}
+            </select>
+          </label>
+        )}
+        <label className="block text-sm font-medium">
+          Tell me more <span className="font-normal text-fg-subtle">(optional)</span>
           <textarea
-            className={`${field} min-h-28 resize-y`}
+            className={`${fieldClass} min-h-24 resize-y`}
             name="message"
-            required
-            placeholder="e.g. a website to show my products and take orders on WhatsApp"
+            placeholder="e.g. I want to show my products and take orders on WhatsApp"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
         </label>
       </div>
 
-      <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-        {hasWhatsapp && (
-          <button
-            type="submit"
-            value="whatsapp"
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-accent px-5 text-sm font-medium text-accent-fg shadow-sm transition-colors hover:bg-accent/90 active:scale-[0.98]"
-          >
-            <WhatsAppIcon />
-            Send on WhatsApp
-          </button>
-        )}
-        {hasEmail && (
-          <button
-            type="submit"
-            value="email"
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border bg-surface px-5 text-sm font-medium transition-colors hover:border-fg/25 hover:bg-muted active:scale-[0.98]"
-          >
-            <MailIcon />
-            Send by email
-          </button>
-        )}
-      </div>
-      <p className="mt-3 text-xs leading-relaxed text-fg-subtle">
-        This opens WhatsApp or your email app with your message ready. Nothing is sent until you press send there.
-      </p>
+      <SendButtons note="This opens WhatsApp or your email app with your message ready. Nothing is sent until you press send there." />
     </form>
   )
 }
@@ -123,6 +118,7 @@ export function Contact() {
   const channels = [
     { label: 'Email', value: social.email, href: `mailto:${social.email}`, icon: MailIcon, set: isSet(social.email) },
     { label: 'Phone', value: social.phone, href: tel, icon: PhoneIcon, set: isSet(social.phone) },
+    { label: 'Instagram', value: displayUrl(social.instagram), href: social.instagram, icon: InstagramIcon, set: isSet(social.instagram) },
     { label: 'LinkedIn', value: displayUrl(social.linkedin), href: social.linkedin, icon: LinkedInIcon, set: isSet(social.linkedin) },
     { label: 'GitHub', value: displayUrl(social.github), href: social.github, icon: GitHubIcon, set: isSet(social.github) },
     // Plain text, not a link: tells local clients where you are based.
@@ -160,6 +156,12 @@ export function Contact() {
                 </ButtonLink>
               )}
             </div>
+            {profile.replyTime && (
+              <p className="mt-4 flex items-center gap-2 text-sm text-fg-muted">
+                <span aria-hidden="true" className="size-2 shrink-0 rounded-full bg-emerald-500" />
+                {profile.replyTime}
+              </p>
+            )}
           </Reveal>
 
           <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1">
@@ -171,7 +173,7 @@ export function Contact() {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block text-sm text-fg-subtle">{label}</span>
-                    <span className="block text-[0.9rem] font-medium [overflow-wrap:anywhere] sm:text-base">{value}</span>
+                    <span className="block text-[0.9rem] font-medium wrap-anywhere sm:text-base">{value}</span>
                   </span>
                   {href && (
                     <ArrowUpRightIcon className="shrink-0 text-fg-subtle transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-fg" />
@@ -202,6 +204,39 @@ export function Contact() {
               )
             })}
           </ul>
+
+          <Reveal>
+            <section
+              aria-labelledby="next-steps-title"
+              className="relative mt-6 overflow-hidden rounded-[1.25rem] border border-accent/30 bg-accent-soft p-6 sm:p-7"
+            >
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -top-20 -right-16 size-56 rounded-full bg-accent/15 blur-3xl"
+              />
+              <p className="eyebrow relative">No obligation</p>
+              <h2 id="next-steps-title" className="relative mt-2 text-xl font-semibold tracking-tight">
+                What happens next
+              </h2>
+              <ol className="relative mt-5 space-y-5">
+                {contactSteps.map((step, i) => (
+                  <li key={step.title} className="relative flex gap-4">
+                    {/* The line joining one step to the next. */}
+                    {i < contactSteps.length - 1 && (
+                      <span aria-hidden="true" className="absolute top-9 bottom-[-1.25rem] left-4 w-px bg-accent/30" />
+                    )}
+                    <span className="relative flex size-8 shrink-0 items-center justify-center rounded-full bg-accent font-mono text-sm font-semibold text-accent-fg">
+                      {i + 1}
+                    </span>
+                    <span>
+                      <span className="block font-semibold">{step.title}</span>
+                      <span className="mt-0.5 block text-sm leading-relaxed text-fg-muted">{step.description}</span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          </Reveal>
         </div>
 
         <Reveal delay={100} className="min-w-0">

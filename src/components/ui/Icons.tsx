@@ -45,6 +45,34 @@ export const PhoneIcon = (p: IconProps) => (
     <path d="M5 4h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.1 6.1l1.4-2.3L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A16.5 16.5 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4Z" />
   </Stroke>
 )
+export const InstagramIcon = (p: IconProps) => (
+  <Stroke {...p}>
+    <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+    <circle cx="12" cy="12" r="4" />
+    <path d="M17.2 6.8h.01" />
+  </Stroke>
+)
+export const StarIcon = ({ filled = false, ...props }: IconProps & { filled?: boolean }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width="1em"
+    height="1em"
+    fill={filled ? 'currentColor' : 'none'}
+    stroke="currentColor"
+    strokeWidth={1.6}
+    strokeLinejoin="round"
+    aria-hidden="true"
+    focusable="false"
+    {...props}
+  >
+    <path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.800-5.200 2.800 1-5.900-4.300-4.100 5.900-.800L12 3.500Z" />
+  </svg>
+)
+export const CheckIcon = (p: IconProps) => (
+  <Stroke {...p}>
+    <path d="m5 12.5 4.5 4.5L19 7.5" />
+  </Stroke>
+)
 export const ArrowUpRightIcon = (p: IconProps) => (
   <Stroke {...p}>
     <path d="M7 17 17 7M8 7h9v9" />
@@ -94,18 +122,6 @@ export const FileIcon = (p: IconProps) => (
   </Stroke>
 )
 
-export const BriefcaseIcon = (p: IconProps) => (
-  <Stroke {...p}>
-    <rect x="3" y="7" width="18" height="13" rx="2.5" />
-    <path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7M3 12.5h18" />
-  </Stroke>
-)
-export const RocketIcon = (p: IconProps) => (
-  <Stroke {...p}>
-    <path d="M14.5 4.5c2.5-1 4.5-1 5-.5s.5 2.5-.5 5l-6 6-4-4 5.5-6.5Z" />
-    <path d="m9 11-3.5.5L3 14l4 1M13 15l-.5 3.5L10 21l-1-4M15.5 8.5h.01M6 18l-2 2" />
-  </Stroke>
-)
 export const MonitorIcon = (p: IconProps) => (
   <Stroke {...p}>
     <rect x="3" y="4" width="18" height="12.5" rx="2" />

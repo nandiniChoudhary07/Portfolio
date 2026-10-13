@@ -152,6 +152,79 @@
   animation: fade-in 0.25s ease-out;
 }
 
+/* Reviews page: a chosen star or the "posted" tick springs into place. */
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.22);
+  }
+}
+.animate-pop {
+  animation: pop 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+}
+
+/* A review that was just posted drops into the list. */
+@keyframes review-in {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.97);
+  }
+}
+.animate-review-in {
+  animation: review-in 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Thank-you panel after posting a review: a ring spreads out, text rises in, confetti flies. */
+@keyframes ring {
+  from {
+    transform: scale(0.8);
+    opacity: 0.55;
+  }
+  to {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+.animate-ring {
+  animation: ring 0.9s ease-out 0.15s both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+.animate-rise {
+  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+}
+
+@keyframes confetti {
+  from {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 1;
+  }
+  to {
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(280deg) scale(1);
+    opacity: 0;
+  }
+}
+.animate-confetti {
+  opacity: 0;
+  animation: confetti 1.1s cubic-bezier(0.15, 0.7, 0.3, 1) forwards;
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.animate-float {
+  animation: float 3.2s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;

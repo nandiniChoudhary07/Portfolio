@@ -16,6 +16,10 @@ interface ButtonLinkProps {
   href: string | undefined
   children: ReactNode
   variant?: Variant
+  /** Stretch to the full width of the container. */
+  block?: boolean
+  /** Open in a new tab even though it is a page of this site. */
+  newTab?: boolean
 }
 
 /**
@@ -23,8 +27,8 @@ interface ButtonLinkProps {
  * it renders as a disabled element instead of a broken link.
  * External (http) links open in a new tab.
  */
-export function ButtonLink({ href, children, variant = 'accent' }: ButtonLinkProps) {
-  const cls = `${base} ${variants[variant]}`
+export function ButtonLink({ href, children, variant = 'accent', block = false, newTab = false }: ButtonLinkProps) {
+  const cls = `${base} ${variants[variant]} ${block ? 'w-full' : ''}`
 
   if (!isSet(href)) {
     return (
@@ -35,7 +39,7 @@ export function ButtonLink({ href, children, variant = 'accent' }: ButtonLinkPro
   }
 
   return (
-    <a href={href} className={cls} {...(isExternal(href) && { target: '_blank', rel: 'noopener noreferrer' })}>
+    <a href={href} className={cls} {...((newTab || isExternal(href)) && { target: '_blank', rel: 'noopener noreferrer' })}>
       {children}
     </a>
   )

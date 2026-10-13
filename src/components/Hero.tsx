@@ -1,9 +1,10 @@
 import { profile, projects, services, social } from '../data/portfolio'
-import { asset, initials, isSet, whatsappHref } from '../lib/content'
+import { initials, isSet, whatsappHref } from '../lib/content'
 import { pageHref } from '../hooks/useRoute'
 import { SocialLinks } from './SocialLinks'
 import { ButtonLink } from './ui/Button'
-import { ArrowRightIcon, ArrowUpRightIcon, MapPinIcon, WhatsAppIcon } from './ui/Icons'
+import { ArrowRightIcon, ArrowUpRightIcon, CheckIcon, MapPinIcon, WhatsAppIcon } from './ui/Icons'
+import { Photo } from './ui/Photo'
 import { Reveal } from './ui/Reveal'
 
 export function Hero() {
@@ -50,6 +51,15 @@ export function Hero() {
             </ButtonLink>
           </div>
 
+          <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-fg-muted">
+            {profile.trustPoints.map((point) => (
+              <li key={point} className="flex items-center gap-1.5">
+                <CheckIcon className="text-accent" />
+                {point}
+              </li>
+            ))}
+          </ul>
+
           <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
             <SocialLinks className="-ml-2.5" />
             {isSet(profile.location) && (
@@ -64,19 +74,12 @@ export function Hero() {
         <Reveal delay={120}>
           <aside aria-label="Services at a glance" className="card relative p-5 shadow-[0_20px_60px_-30px_rgb(0_0_0/0.25)] sm:p-6">
             <div className="flex items-center gap-4 border-b border-border pb-5">
-              {profile.photo ? (
-                <img
-                  src={asset(profile.photo)}
-                  alt={`Portrait of ${profile.name}`}
-                  width={56}
-                  height={56}
-                  className="size-14 rounded-full object-cover"
-                />
-              ) : (
-                <span className="flex size-14 items-center justify-center rounded-full bg-accent-soft font-mono text-lg font-semibold text-accent">
-                  {initials(profile.name)}
-                </span>
-              )}
+              <Photo
+                src={profile.photo}
+                alt={`Portrait of ${profile.name}`}
+                fallback={initials(profile.name)}
+                className="size-14 shrink-0 rounded-full text-lg"
+              />
               <div className="min-w-0">
                 <p className="truncate font-semibold">{profile.name}</p>
                 <p className="text-sm text-fg-muted">{profile.role}</p>
@@ -111,7 +114,7 @@ export function Hero() {
                   rel="noopener noreferrer"
                   className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-accent/30 bg-accent-soft px-3.5 py-3 transition-colors hover:border-accent/60"
                 >
-                  <span className="text-sm font-medium">{example.title}</span>
+                  <span className="text-sm font-medium">{example.name}</span>
                   <span className="flex items-center gap-1 text-xs font-medium text-accent">
                     View live site <ArrowUpRightIcon />
                   </span>

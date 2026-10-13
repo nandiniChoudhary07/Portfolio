@@ -1,10 +1,11 @@
 import { social } from '../data/portfolio'
 import { isSet } from '../lib/content'
-import { GitHubIcon, LinkedInIcon, MailIcon } from './ui/Icons'
+import { GitHubIcon, InstagramIcon, LinkedInIcon, MailIcon } from './ui/Icons'
 
-export const socialItems = [
+const socialItems = [
   { label: 'GitHub', href: social.github, icon: GitHubIcon, set: isSet(social.github) },
   { label: 'LinkedIn', href: social.linkedin, icon: LinkedInIcon, set: isSet(social.linkedin) },
+  { label: 'Instagram', href: social.instagram, icon: InstagramIcon, set: isSet(social.instagram) },
   { label: 'Email', href: `mailto:${social.email}`, icon: MailIcon, set: isSet(social.email) },
 ].filter((item) => item.href !== '') // a link left as '' in portfolio.ts is hidden
 

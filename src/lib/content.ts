@@ -20,6 +20,11 @@ export function asset(path: string): string {
   return import.meta.env.BASE_URL + path.replace(/^\//, '')
 }
 
+/** URL path of a page: 'home' → '/', 'services' → '/services'. */
+export function pagePath(id: string): string {
+  return id === 'home' ? '/' : `/${id}`
+}
+
 /** Opens a WhatsApp chat with the message already typed. Works on phones and WhatsApp Web. */
 export function whatsappHref(number: string, message: string): string {
   return `https://wa.me/${number.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`

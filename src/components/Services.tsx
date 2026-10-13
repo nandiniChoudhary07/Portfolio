@@ -1,7 +1,17 @@
-import { deliverables, processSteps, projects, serviceExamples, services, social } from '../data/portfolio'
+import {
+  deliverables,
+  processSteps,
+  projects,
+  serviceExamples,
+  services,
+  SHOW_PRICES,
+  social,
+} from '../data/portfolio'
 import { pageHref } from '../hooks/useRoute'
 import { isSet, whatsappHref } from '../lib/content'
 import type { Deliverable, Service, ServiceExample } from '../types'
+import { Faq } from './Faq'
+import { Pricing } from './Pricing'
 import { Badge, ButtonLink } from './ui/Button'
 import {
   ArrowRightIcon,
@@ -17,7 +27,7 @@ import {
   WhatsAppIcon,
 } from './ui/Icons'
 import { Reveal } from './ui/Reveal'
-import { Section } from './ui/Section'
+import { Section, SubSection } from './ui/Section'
 
 const serviceIcons: Record<Service['icon'], typeof MonitorIcon> = {
   site: MonitorIcon,
@@ -78,17 +88,6 @@ function SampleLayout({ example }: { example: ServiceExample }) {
   )
 }
 
-function SubHeading({ id, title, text }: { id: string; title: string; text: string }) {
-  return (
-    <Reveal>
-      <h2 id={id} className="text-2xl font-semibold tracking-tight sm:text-3xl">
-        {title}
-      </h2>
-      <p className="mt-3 max-w-2xl text-fg-muted">{text}</p>
-    </Reveal>
-  )
-}
-
 export function Services() {
   return (
     <Section
@@ -125,12 +124,26 @@ export function Services() {
                       href={example.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-auto inline-flex items-center gap-1.5 self-start pt-6 text-sm font-semibold text-accent hover:underline"
+                      className="mt-5 inline-flex items-center gap-1.5 self-start text-sm font-semibold text-accent hover:underline"
                     >
-                      See a store I built: {example.title}
+                      See a store I built: {example.name}
                       <ArrowUpRightIcon />
                     </a>
                   )}
+                  <div className="mt-auto pt-6">
+                    <dl className="flex flex-wrap gap-x-10 gap-y-3 border-t border-border pt-5 text-sm">
+                      {SHOW_PRICES && (
+                        <div>
+                          <dt className="text-fg-subtle">Price</dt>
+                          <dd className="mt-0.5 font-semibold">{service.price}</dd>
+                        </div>
+                      )}
+                      <div>
+                        <dt className="text-fg-subtle">Delivery</dt>
+                        <dd className="mt-0.5 font-semibold">{service.delivery}</dd>
+                      </div>
+                    </dl>
+                  </div>
                 </article>
               </Reveal>
             </li>
@@ -138,13 +151,17 @@ export function Services() {
         })}
       </ul>
 
+      <div className="mt-16 sm:mt-20">
+        <Pricing />
+      </div>
+
       {deliverables.length > 0 && (
-        <section aria-labelledby="deliverables-title" className="mt-16 sm:mt-20">
-          <SubHeading
-            id="deliverables-title"
-            title="What you get"
-            text="The things customers expect from a business website, built into yours wherever they fit."
-          />
+        <SubSection
+          id="deliverables"
+          className="mt-16 sm:mt-20"
+          title="What you get"
+          text="The things customers expect from a business website, built into yours wherever they fit."
+        >
           <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {deliverables.map((item, i) => {
               const Icon = deliverableIcons[item.icon]
@@ -163,16 +180,16 @@ export function Services() {
               )
             })}
           </ul>
-        </section>
+        </SubSection>
       )}
 
       {serviceExamples.length > 0 && (
-        <section aria-labelledby="examples-title" className="mt-16 sm:mt-20">
-          <SubHeading
-            id="examples-title"
-            title="Examples for your kind of business"
-            text="These show what I would build for a business like yours. They are examples, not past client projects."
-          />
+        <SubSection
+          id="examples"
+          className="mt-16 sm:mt-20"
+          title="Examples for your kind of business"
+          text="These show what I would build for a business like yours. They are examples, not past client projects."
+        >
           <ul className="mt-8 grid gap-4 md:grid-cols-2">
             {serviceExamples.map((example, i) => (
               <li key={example.title}>
@@ -197,15 +214,15 @@ export function Services() {
               </li>
             ))}
           </ul>
-        </section>
+        </SubSection>
       )}
 
-      <section aria-labelledby="process-title" className="mt-16 sm:mt-20">
-        <SubHeading
-          id="process-title"
-          title="How it works"
-          text="A simple process, so you always know what happens next."
-        />
+      <SubSection
+        id="process"
+        className="mt-16 sm:mt-20"
+        title="How it works"
+        text="A simple process, so you always know what happens next."
+      >
         <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {processSteps.map((step, i) => (
             <li key={step.title}>
@@ -219,7 +236,11 @@ export function Services() {
             </li>
           ))}
         </ol>
-      </section>
+      </SubSection>
+
+      <div className="mt-16 sm:mt-20">
+        <Faq />
+      </div>
 
       <Reveal>
         <section

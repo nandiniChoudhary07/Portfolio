@@ -4,7 +4,7 @@ import type { CaseStudy as CaseStudyData, CaseStudyItem } from '../../types'
 function Block({ title, children, wide = false }: { title: string; children: ReactNode; wide?: boolean }) {
   return (
     <div className={wide ? 'md:col-span-2' : undefined}>
-      <h4 className="font-mono text-xs tracking-wide text-accent uppercase">{title}</h4>
+      <h3 className="font-mono text-xs tracking-wide text-accent uppercase">{title}</h3>
       <div className="mt-2 leading-relaxed text-fg-muted">{children}</div>
     </div>
   )

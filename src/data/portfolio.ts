@@ -8,14 +8,16 @@
  *  • Links that still hold a placeholder render as disabled buttons, so the
  *    live site never contains a broken link.
  *  • Set an optional link to '' to hide its button completely.
- *  • Images live in /public (e.g. /public/projects/phoolo-home.webp) and are
- *    referenced here as '/projects/phoolo-home.webp'.
+ *  • Images live in /public/images and are referenced here with a leading slash,
+ *    e.g. '/images/projects/phoolo-desktop.png'.
  *  • Only write what is true. Remove any bullet that doesn't apply to you.
  */
 import type {
   Deliverable,
-  Highlight,
+  Faq,
   NavItem,
+  PageMeta,
+  PricingPackage,
   ProcessStep,
   Profile,
   Project,
@@ -24,20 +26,32 @@ import type {
   SocialLinks,
 } from '../types.ts'
 
+// Paste your Instagram profile link here, e.g. 'https://www.instagram.com/yourname'.
+// The Instagram links stay hidden while this is empty.
+export const INSTAGRAM_URL = ''
+
+// Prices are hidden for now; the package cards still show, without amounts.
+// Set this to true to show the prices again: on the package cards, the service cards,
+// the notes under the packages, the budget field on Contact, the FAQ and search descriptions.
+export const SHOW_PRICES: boolean = false
+
 export const profile: Profile = {
   name: 'Nandini Choudhary',
   role: 'Freelance Web Developer',
-  roleLong: 'Freelance Web Developer',
+  tagline: 'Websites for local businesses',
   heroTitle: 'Websites that help your business grow.',
   headline:
     'I build modern, mobile-friendly websites and online stores for local businesses, including bakeries, clothing boutiques, and small shops. Help your customers discover your business, explore your products, and contact you easily.',
+  trustPoints: ['Ready in 2–3 weeks', 'Mobile-friendly', 'Support after launch'],
   badge: 'Available for freelance projects',
   location: 'Muzaffarnagar, Uttar Pradesh',
-  photo: '',
+  serviceArea: 'Working with clients across India',
+  replyTime: 'I usually reply within a few hours, Monday to Saturday.',
+  // Add your photo as /public/images/nandini.jpg. Your initials show until the file exists.
+  photo: '/images/nandini.jpg',
   siteUrl: 'https://nandini-choudhary-portfolio.onrender.com',
-  seoDescription:
-    'Nandini Choudhary builds mobile-friendly websites and online stores for businesses. Based in Muzaffarnagar, Uttar Pradesh.',
-  ogImage: '',
+  // Social preview image (1200×630) in /public. Edit public/og-image.svg, then re-export the PNG.
+  ogImage: '/og-image.png',
 }
 
 export const social: SocialLinks = {
@@ -48,6 +62,66 @@ export const social: SocialLinks = {
   // Hidden while empty. Paste the full URL (https://...) to show the link everywhere.
   linkedin: '',
   github: '',
+  instagram: INSTAGRAM_URL,
+}
+
+// What Google and link previews (WhatsApp, Instagram) show for each page.
+// Keep titles under about 60 characters and descriptions under about 155.
+export const pageMeta: Record<string, PageMeta> = {
+  home: {
+    title: 'Nandini Choudhary | Website Developer in Muzaffarnagar',
+    description:
+      'Mobile-friendly websites and online stores for bakeries, boutiques, clinics and shops in Muzaffarnagar and across India.' +
+      (SHOW_PRICES ? ' Packages start at ₹4,999.' : ''),
+  },
+  services: {
+    title: SHOW_PRICES
+      ? 'Website Packages & Pricing for Small Businesses | Nandini Choudhary'
+      : 'Website Packages for Small Businesses | Nandini Choudhary',
+    description: SHOW_PRICES
+      ? 'Business websites from ₹4,999 and online stores from ₹24,999. See what each package includes, delivery times and answers to common questions.'
+      : 'Website packages for small businesses: business websites, online stores, redesigns and maintenance. See what each includes and how long it takes.',
+  },
+  projects: {
+    title: 'Website Projects & Concepts | Nandini Choudhary',
+    description:
+      'A live online plant store with payments and an admin dashboard, plus website concepts for a bakery and a clothing boutique.',
+  },
+  about: {
+    title: 'About Nandini Choudhary | Web Developer in Muzaffarnagar',
+    description:
+      'Nandini Choudhary is a web developer in Muzaffarnagar, Uttar Pradesh, building websites and online stores for local businesses.',
+  },
+  reviews: {
+    title: 'Reviews | Nandini Choudhary, Website Developer',
+    description:
+      'Reviews of websites and online stores built by Nandini Choudhary. Worked with her? Leave a review of your own.',
+  },
+  'all-reviews': {
+    title: 'All Reviews | Nandini Choudhary, Website Developer',
+    description: 'Every review of websites and online stores built by Nandini Choudhary, newest first.',
+  },
+  contact: {
+    title: 'Contact Nandini Choudhary | Get a Website Quote',
+    description:
+      'Message Nandini on WhatsApp, call or email for a quote on your business website. Replies within a few hours, Monday to Saturday.',
+  },
+}
+
+// The "Who I build for" row on Home.
+export const audiences = ['Bakeries', 'Boutiques', 'Clinics', 'Coaching institutes', 'Shops']
+
+// The "What happens next" card on the Contact page.
+export const contactSteps: ProcessStep[] = [
+  { title: 'You send a message', description: 'On WhatsApp, by email or with the form. A few lines is enough.' },
+  { title: 'I reply with a few questions', description: 'Usually within a few hours, Monday to Saturday.' },
+  { title: 'You get a plan and a quote', description: 'What I will build, how long it takes and what it costs, before any work starts.' },
+]
+
+// Choices in the Contact page enquiry form. Both are included in the WhatsApp/email message.
+export const enquiryOptions = {
+  needs: ['Business website', 'Online store', 'Redesign', 'Updates', 'Not sure yet'],
+  budgets: ['Under ₹5,000', '₹5,000–10,000', '₹10,000–25,000', '₹25,000+'],
 }
 
 export const navItems: NavItem[] = [
@@ -55,11 +129,12 @@ export const navItems: NavItem[] = [
   { id: 'services', label: 'Services' },
   { id: 'projects', label: 'Projects' },
   { id: 'about', label: 'About' },
+  { id: 'reviews', label: 'Reviews' },
+  { id: 'all-reviews', label: 'All reviews', hidden: true }, // opened from the Reviews page
   { id: 'contact', label: 'Contact' },
 ]
 
 // What you offer clients. Keep it true: only list work you are ready to take on.
-// No prices here on purpose. Add them to `description` if you decide on fixed packages.
 export const services: Service[] = [
   {
     title: 'Business Website',
@@ -72,6 +147,8 @@ export const services: Service[] = [
       'Set up so search engines can read it',
     ],
     icon: 'site',
+    price: 'Starting from ₹4,999',
+    delivery: '1–3 weeks',
   },
   {
     title: 'Online Store',
@@ -84,6 +161,8 @@ export const services: Service[] = [
       'Admin panel for orders, stock and products',
     ],
     icon: 'store',
+    price: 'Starting from ₹24,999',
+    delivery: '6–8 weeks',
     exampleProjectId: 'phoolo-ki-ghati',
   },
   {
@@ -97,12 +176,98 @@ export const services: Service[] = [
       'Your existing content carried over',
     ],
     icon: 'redesign',
+    price: 'Starting from ₹6,999',
+    delivery: '2–3 weeks',
   },
   {
     title: 'Updates & Maintenance',
     description: 'Ongoing help after launch, so your website stays correct and keeps working.',
     includes: ['Content and photo updates', 'New pages and sections', 'Bug fixes', 'Small improvements over time'],
     icon: 'support',
+    price: '₹999/month',
+    delivery: 'Ongoing, month to month',
+  },
+]
+
+// Packages shown on the Services page (#pricing) and previewed on Home.
+// Change a price here and it updates everywhere, including the WhatsApp message.
+export const packages: PricingPackage[] = [
+  {
+    name: 'Starter',
+    price: '₹4,999',
+    summary: 'A simple one-page site that gets your business online.',
+    features: [
+      '1-page site',
+      'WhatsApp + Call buttons',
+      'Google Maps + timings',
+      'Basic SEO',
+      '15 days of free updates',
+    ],
+    delivery: 'Ready in 7–10 days',
+  },
+  {
+    name: 'Business',
+    price: '₹9,999',
+    summary: 'A complete website for an established shop or service.',
+    features: ['Up to 5 pages', 'Everything in Starter', 'Photo gallery', 'Enquiry form', '1 month of free updates'],
+    delivery: 'Ready in 2–3 weeks',
+    popular: true,
+  },
+  {
+    name: 'Online Store',
+    price: '₹24,999',
+    summary: 'Sell your products online and manage orders yourself.',
+    features: [
+      'Product catalogue',
+      'Cart',
+      'Razorpay + cash on delivery',
+      'Admin panel for orders and stock',
+      '2 months of free updates',
+    ],
+    delivery: 'Ready in 6–8 weeks',
+  },
+]
+
+export const pricingNotes = {
+  addOns: ['Domain setup', 'Google Business Profile setup', 'Logo', 'Extra pages'],
+  maintenance: 'A monthly plan for content updates, small changes and fixes.',
+  maintenancePriced: '₹999/month for content updates, small changes and fixes.',
+  hosting: 'Domain and hosting are paid separately. I help you set them up, and the site is fully yours.',
+  hostingPriced:
+    'Domain and hosting are paid separately (usually ₹800–1,500 a year). I help you set them up, and the site is fully yours.',
+}
+
+export const faqs: Faq[] = [
+  {
+    question: 'How much does a website cost?',
+    answer: 'It depends on what you need. Tell me a little about your business and I’ll send you an exact quote.',
+    link: { label: 'Get a quote', page: 'contact' },
+    priced: {
+      answer: 'Starts at ₹4,999. See the packages, or message me for an exact quote.',
+      link: { label: 'See the packages', page: 'services', section: 'pricing' },
+    },
+  },
+  {
+    question: 'How long does it take?',
+    answer: '1–3 weeks for most business sites, 6–8 weeks for an online store.',
+  },
+  {
+    question: 'Do I need to buy a domain and hosting?',
+    answer: 'Yes. They are paid separately each year, and I’ll set it all up for you.',
+    priced: { answer: 'Yes, about ₹800–1,500 a year. I’ll set it all up for you.' },
+  },
+  {
+    question: 'Will the website be mine?',
+    answer: 'Yes. The domain, content and site belong to you.',
+  },
+  {
+    question: 'Can I update it myself?',
+    answer: 'Online stores come with an admin panel. For other sites, I make updates for you.',
+  },
+  {
+    question: 'What happens after launch?',
+    answer: 'Free updates for a period after launch, then an optional monthly maintenance plan.',
+    priced: { answer: 'Free updates for the period in your package, then an optional ₹999/month plan.' },
   },
 ]
 
@@ -173,91 +338,64 @@ export const processSteps: ProcessStep[] = [
   { title: 'Launch and support', description: 'The site goes live, and I stay available for updates and fixes.' },
 ]
 
-export const about: { paragraphs: string[]; highlights: Highlight[] } = {
-  paragraphs: [
+export const about = {
+  intro:
     "I build websites and online stores for businesses. If your customers still have to call or message you to find out what you offer, I can give you a site that shows your work, answers the common questions, and makes it easy to get in touch or place an order.",
-    "I'm a frontend developer who builds web and mobile interfaces for client projects using React.js, React Native, JavaScript, and Tailwind CSS. That means the sites I build for you get the same care as professional products: responsive, user-friendly, and consistent across browsers and devices.",
-    'I also built Phoolo ki ghati on my own, from the first idea to a live online store with payments, customer accounts and an admin panel. Owning a project end to end taught me to think about the whole business, not just the screen in front of me.',
-    'I keep things simple: plain language instead of jargon, regular updates while your site is being built, and clean, well-organised code so the site stays easy to change later.',
-  ],
-  // Leave `value` as '' unless you want to show an accurate figure (e.g. '2+').
-  highlights: [
-    {
-      label: 'Real-world projects',
-      description: 'Contributing to live client products as part of a development team.',
-      value: '',
-    },
-    {
-      label: 'Production experience',
-      description: 'Shipping features and fixing issues in codebases that are already in use.',
-      value: '',
-    },
-    {
-      label: 'Web & mobile',
-      description: 'React.js for the web and React Native for cross-platform mobile apps.',
-      value: '',
-    },
-    {
-      label: 'Independent builder',
-      description: 'Designed, built, and deployed Phoolo ki ghati on my own.',
-      value: '',
-    },
-  ],
+  bio: "I'm Nandini, a web developer based in Muzaffarnagar. I've built a full online store on my own and work on live client projects as part of a development team, so your site gets the same care as a professional product.",
+  reasons: ['Quick replies on WhatsApp', 'Plain language, no jargon', 'Progress updates while I build', 'Help after launch'],
+  tools: ['React', 'Tailwind CSS', 'Node.js', 'PostgreSQL'],
 }
-
-// Technology chips on the "Frontend Focused" card. Only list what you actually use.
-export const frontendFocus = ['React', 'JavaScript', 'HTML', 'CSS']
 
 export const projects: Project[] = [
   {
     id: 'phoolo-ki-ghati',
-    title: 'Phoolo ki ghati',
-    type: 'Independent Project',
-    status: 'Live',
+    name: 'Phoolo ki ghati',
+    title: 'Phoolo ki ghati: an online plant store',
+    label: 'Live project',
     description:
-      'A full-stack e-commerce store for plants, seeds, grow bags and gardening tools that I built on my own — a customer storefront with online payments, plus an admin dashboard the owner uses to run the business.',
-    role: 'Developer / Creator (solo, full-stack)',
-    technologies: [
-      'Node.js',
-      'Express',
-      'PostgreSQL',
-      'Nunjucks',
-      'JavaScript',
-      'React',
-      'Vite',
-      'Tailwind CSS',
-      'Razorpay',
-      'Fast2SMS',
-      'Render',
-    ],
-    features: [
-      'Product discovery with search, filters and pagination over a 278-product catalogue',
-      'Category browsing with stock status (in stock, out of stock, low stock)',
-      'Cart, checkout, COD and Razorpay online payments',
-      'Passwordless OTP login by mobile number, plus email/password accounts',
-      'Customer accounts with order history, order cancellation and address updates',
-      'Admin dashboard for orders, customer messages, quote requests and inventory',
-      'Reviews, and a quote request form for bulk buyers',
-      'Responsive UI across mobile, tablet and desktop',
-    ],
-    contributions: [
-      'Planned, designed, built and deployed the whole project on my own.',
-      'Designed the PostgreSQL schema and built the Express backend — about 50 routes across the storefront, account and admin areas.',
-      'Designed and built the storefront and admin UI, including a split-screen login and a fully responsive layout.',
-      'Integrated Razorpay with server-side HMAC signature verification, and Fast2SMS for OTP delivery.',
-      'Built admin tools for CSV product import/export, bulk image upload, stock editing and order status management.',
-      'Deployed the app and the database on Render.',
-    ],
-    // Add more screenshots to /public/projects and list them here.
-    images: [
-      {
-        src: '/projects/phoolo-home.png',
-        alt: 'Phoolo ki ghati home page with category cards for garden plants, seeds, grow bags and gardening tools',
-      },
-    ],
+      'Customers browse 278 plants and gardening products, pay online or by cash on delivery, and log in with an OTP on their phone. The owner manages orders, stock and messages from one dashboard.',
+    // Add the files to /public/images/projects. A placeholder shows until each one exists.
+    screenshots: {
+      desktop: '/images/projects/phoolo-desktop.png',
+      phone: '/images/projects/phoolo-phone.png',
+    },
     liveUrl: 'https://apna-bagicha.onrender.com/',
-    githubUrl: '', // hidden while empty; paste the repo URL to show a GitHub button
+    liveLabel: 'View live store',
     featured: true,
+    technical: {
+      role: 'Developer / Creator (solo, full-stack)',
+      technologies: [
+        'Node.js',
+        'Express',
+        'PostgreSQL',
+        'Nunjucks',
+        'JavaScript',
+        'React',
+        'Vite',
+        'Tailwind CSS',
+        'Razorpay',
+        'Fast2SMS',
+        'Render',
+      ],
+      features: [
+        'Product discovery with search, filters and pagination over a 278-product catalogue',
+        'Category browsing with stock status (in stock, out of stock, low stock)',
+        'Cart, checkout, COD and Razorpay online payments',
+        'Passwordless OTP login by mobile number, plus email/password accounts',
+        'Customer accounts with order history, order cancellation and address updates',
+        'Admin dashboard for orders, customer messages, quote requests and inventory',
+        'Reviews, and a quote request form for bulk buyers',
+        'Responsive UI across mobile, tablet and desktop',
+      ],
+      contributions: [
+        'Planned, designed, built and deployed the whole project on my own.',
+        'Designed the PostgreSQL schema and built the Express backend — about 50 routes across the storefront, account and admin areas.',
+        'Designed and built the storefront and admin UI, including a split-screen login and a fully responsive layout.',
+        'Integrated Razorpay with server-side HMAC signature verification, and Fast2SMS for OTP delivery.',
+        'Built admin tools for CSV product import/export, bulk image upload, stock editing and order status management.',
+        'Deployed the app and the database on Render.',
+      ],
+    },
     caseStudy: {
       problem:
         "Small plant and gardening sellers often depend on WhatsApp and phone calls to take orders. Customers can't browse a catalogue or see what's in stock, and the seller has to track orders by hand. This project gives one such business a proper online store and a back office to run it.",
@@ -308,5 +446,37 @@ export const projects: Project[] = [
         'Deployment problems are mostly configuration and infrastructure issues, so I now read the logs and check the env vars first.',
       ],
     },
+  },
+  // Concepts: designs for a type of business, not client work. The page says so.
+  // Replace each [PLACEHOLDER] link with the demo URL once it is online.
+  {
+    id: 'sweet-crumbs-bakery',
+    name: 'Sweet Crumbs Bakery',
+    title: 'Sweet Crumbs Bakery',
+    label: 'Concept',
+    description:
+      'A bakery website where customers see the menu and the cakes, then order on WhatsApp instead of calling to ask what is available.',
+    highlights: ['Menu with photos and prices', 'Cake gallery', 'Order on WhatsApp'],
+    screenshots: {
+      desktop: '/images/projects/bakery-desktop.png',
+      phone: '/images/projects/bakery-phone.png',
+    },
+    liveUrl: '[BAKERY_DEMO_URL]',
+    liveLabel: 'View demo',
+  },
+  {
+    id: 'clothing-boutique',
+    name: 'Clothing boutique',
+    title: 'Clothing boutique',
+    label: 'Concept',
+    description:
+      'A boutique website that puts the collection online, so customers can ask about a piece before they visit the shop.',
+    highlights: ['Collection gallery', 'WhatsApp enquiry on every item'],
+    screenshots: {
+      desktop: '/images/projects/boutique-desktop.png',
+      phone: '/images/projects/boutique-phone.png',
+    },
+    liveUrl: '[BOUTIQUE_DEMO_URL]',
+    liveLabel: 'View demo',
   },
 ]

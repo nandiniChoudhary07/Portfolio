@@ -2,20 +2,25 @@ export interface Profile {
   name: string
   /** Short role used in the page title and navbar, e.g. "Frontend Developer". */
   role: string
-  /** Longer role line shown in the hero and footer. */
-  roleLong: string
+  /** One line on who you build for, shown in the footer and social preview. */
+  tagline: string
   /** Big line on the Home page: what you do for a client, in plain words. */
   heroTitle: string
   headline: string
+  /** Short reassurances shown under the Home buttons. */
+  trustPoints: string[]
   /** Small pill above the hero heading. Set to '' to hide it. */
   badge: string
   /** Optional. Set to '' to hide. */
   location: string
-  /** Optional path to a photo in /public, e.g. '/profile.webp'. Initials are shown when empty. */
+  /** Shown after the location in the footer, e.g. "Working with clients across India". */
+  serviceArea: string
+  /** Shown on the Contact page, e.g. when you usually reply. Set to '' to hide. */
+  replyTime: string
+  /** Path to your photo in /public, e.g. '/images/nandini.jpg'. Initials show until the file exists. */
   photo: string
   /** Full public URL of the deployed site, e.g. 'https://yourname.vercel.app'. Used for SEO + sitemap. */
   siteUrl: string
-  seoDescription: string
   /** Optional 1200×630 social preview image in /public, e.g. '/og-image.png'. */
   ogImage: string
 }
@@ -30,19 +35,7 @@ export interface SocialLinks {
   whatsappMessage: string
   linkedin: string
   github: string
-}
-
-export interface Highlight {
-  label: string
-  description: string
-  /** Optional short value such as "2+". Leave '' unless it is accurate. */
-  value?: string
-}
-
-interface ProjectImage {
-  /** Path in /public, e.g. '/projects/phoolo-home.webp'. */
-  src: string
-  alt: string
+  instagram: string
 }
 
 /** A plain bullet, or one with a bold lead-in title. */
@@ -61,22 +54,25 @@ export interface CaseStudy {
 
 export interface Project {
   id: string
+  /** Short name, used on Home and in links. */
+  name: string
+  /** Card heading: the name plus what it is, in plain words. */
   title: string
-  /** Short label shown as a badge, e.g. "Independent Project". */
-  type: string
-  /** e.g. "Live". Leave '' to hide. */
-  status?: string
+  /** Badge on the card, e.g. "Live project" or "Concept". */
+  label: string
+  /** What the site does for the business and its customers. */
   description: string
-  role: string
-  technologies: string[]
-  features?: string[]
-  contributions: string[]
-  images: ProjectImage[]
-  /** Set to '' to hide the button. */
+  /** Optional short points shown with ticks. */
+  highlights?: string[]
+  /** Screenshots in /public. A placeholder shows until each file exists. */
+  screenshots: { desktop: string; phone: string }
+  /** Set to '' to hide the button. While it holds a [PLACEHOLDER] the button reads "Demo coming soon". */
   liveUrl?: string
-  githubUrl?: string
-  /** Highlighted on the Home page and linked from the Services page. */
+  liveLabel: string
+  /** The large card: highlighted on Home and linked from the Services page. */
   featured?: boolean
+  /** Folded away under "Technical details". */
+  technical?: { role: string; technologies: string[]; features: string[]; contributions: string[] }
   caseStudy?: CaseStudy
 }
 
@@ -85,8 +81,24 @@ export interface Service {
   description: string
   includes: string[]
   icon: 'site' | 'store' | 'redesign' | 'support'
+  /** Shown on the card, e.g. "Starting from ₹4,999" or "₹999/month". */
+  price: string
+  /** Typical delivery time, e.g. "3–10 days". */
+  delivery: string
   /** Optional: id of a project that proves this service. Its live link is shown on the card. */
   exampleProjectId?: string
+}
+
+export interface PricingPackage {
+  name: string
+  /** Starting price, e.g. "₹4,999". Shown after the word "from". */
+  price: string
+  summary: string
+  features: string[]
+  /** e.g. "Ready in 3–5 days". */
+  delivery: string
+  /** Highlights the card with a "Most popular" badge. */
+  popular?: boolean
 }
 
 /** Something every client receives, shown in the "What you get" row. */
@@ -107,7 +119,22 @@ export interface ServiceExample {
   theme: 'warm' | 'rose'
 }
 
+export interface Faq {
+  question: string
+  answer: string
+  /** Optional link shown after the answer, e.g. to the contact page. */
+  link?: { label: string; page: string; section?: string }
+  /** Version of the answer that quotes prices. Used only while SHOW_PRICES is true. */
+  priced?: Pick<Faq, 'answer' | 'link'>
+}
+
 export interface ProcessStep {
+  title: string
+  description: string
+}
+
+/** Title and description of one page, for search results and link previews. */
+export interface PageMeta {
   title: string
   description: string
 }
@@ -115,4 +142,6 @@ export interface ProcessStep {
 export interface NavItem {
   id: string
   label: string
+  /** A real page with its own address that is left out of the menu. */
+  hidden?: boolean
 }

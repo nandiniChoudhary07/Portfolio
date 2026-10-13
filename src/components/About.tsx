@@ -1,35 +1,46 @@
-import { about } from '../data/portfolio'
+import { about, profile } from '../data/portfolio'
+import { initials } from '../lib/content'
+import { CheckIcon } from './ui/Icons'
+import { Photo } from './ui/Photo'
 import { Reveal } from './ui/Reveal'
 import { Section } from './ui/Section'
 
 export function About() {
   return (
     <Section id="about" eyebrow="About" title="I build websites that work for real businesses.">
-      <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+      <div className="grid gap-10 md:grid-cols-[16rem_1fr] lg:grid-cols-[20rem_1fr] lg:gap-16">
         <Reveal>
-          <div className="space-y-5 text-base leading-relaxed text-fg-muted sm:text-[1.05rem]">
-            {about.paragraphs.map((text, i) => (
-              <p key={i} className={i === 0 ? 'text-fg' : undefined}>
-                {text}
-              </p>
-            ))}
-          </div>
+          <Photo
+            src={profile.photo}
+            alt={`Portrait of ${profile.name}`}
+            fallback={initials(profile.name)}
+            className="aspect-4/5 w-full max-w-xs rounded-3xl border border-border text-5xl"
+          />
         </Reveal>
 
-        <ul className="grid gap-3 sm:grid-cols-2 lg:self-start">
-          {about.highlights.map((h, i) => (
-            <li key={h.label}>
-              <Reveal delay={i * 70} className="h-full">
-                <div className="card h-full p-5 transition-colors hover:border-fg/20">
-                  <span aria-hidden="true" className="mb-4 block h-1 w-8 rounded-full bg-accent" />
-                  {h.value && <p className="text-3xl font-semibold tracking-tight">{h.value}</p>}
-                  <p className="font-semibold">{h.label}</p>
-                  <p className="mt-1.5 text-sm leading-relaxed text-fg-muted">{h.description}</p>
-                </div>
-              </Reveal>
-            </li>
-          ))}
-        </ul>
+        <div>
+          <Reveal>
+            <div className="max-w-2xl space-y-5 text-base leading-relaxed sm:text-[1.05rem]">
+              <p>{about.intro}</p>
+              <p className="text-fg-muted">{about.bio}</p>
+            </div>
+          </Reveal>
+
+          <Reveal>
+            <h2 className="mt-10 text-xl font-semibold tracking-tight">Why work with me</h2>
+            <ul className="mt-5 grid max-w-2xl gap-3 sm:grid-cols-2">
+              {about.reasons.map((reason) => (
+                <li key={reason} className="card flex items-center gap-3 px-4 py-3.5 font-medium">
+                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent">
+                    <CheckIcon />
+                  </span>
+                  {reason}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-8 text-sm text-fg-subtle">Tools I use: {about.tools.join(', ')}.</p>
+          </Reveal>
+        </div>
       </div>
     </Section>
   )

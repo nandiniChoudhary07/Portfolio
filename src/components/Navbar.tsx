@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { navItems, profile } from '../data/portfolio'
-import { pageHref, scrollToTop } from '../hooks/useRoute'
+import { pageHref } from '../hooks/useRoute'
 import { useScrolled } from '../hooks/useScrollState'
 import { initials } from '../lib/content'
 import { CloseIcon, MenuIcon } from './ui/Icons'
@@ -8,7 +8,8 @@ import { ThemeToggle } from './ui/ThemeToggle'
 
 export function Navbar({ page }: { page: string }) {
   const scrolled = useScrolled()
-  const active = page
+  const links = navItems.filter((item) => !item.hidden)
+  const active = page === 'all-reviews' ? 'reviews' : page // "All reviews" belongs under Reviews
   const [open, setOpen] = useState(false)
   const menuButton = useRef<HTMLButtonElement>(null)
   const firstLink = useRef<HTMLAnchorElement>(null)
@@ -60,8 +61,9 @@ export function Navbar({ page }: { page: string }) {
       >
         <a
           href={pageHref('home')}
-          onClick={() => page === 'home' && scrollToTop()}
-          className="flex items-center gap-2.5 rounded-lg" aria-label={`${profile.name} — back to top`}>
+          className="flex items-center gap-2.5 rounded-lg"
+          aria-label={`${profile.name} — home`}
+        >
           <span className="flex size-8 items-center justify-center rounded-lg bg-fg font-mono text-xs font-semibold text-bg">
             {initials(profile.name)}
           </span>
@@ -69,13 +71,12 @@ export function Navbar({ page }: { page: string }) {
         </a>
 
         <ul className="hidden items-center gap-0.5 lg:flex">
-          {navItems.map((item) => {
+          {links.map((item) => {
             const isActive = active === item.id
             return (
               <li key={item.id}>
                 <a
                   href={pageHref(item.id)}
-                  onClick={() => isActive && scrollToTop()}
                   aria-current={isActive ? 'page' : undefined}
                   className={`relative rounded-full px-3 py-2 text-sm transition-colors ${
                     isActive ? 'text-fg' : 'text-fg-muted hover:text-fg'
@@ -116,15 +117,12 @@ export function Navbar({ page }: { page: string }) {
           className="animate-fade-in h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-border bg-bg lg:hidden"
         >
           <ul className="container-page flex flex-col py-4">
-            {navItems.map((item, i) => (
+            {links.map((item, i) => (
               <li key={item.id}>
                 <a
                   ref={i === 0 ? firstLink : undefined}
                   href={pageHref(item.id)}
-                  onClick={() => {
-                    setOpen(false)
-                    if (active === item.id) scrollToTop()
-                  }}
+                  onClick={() => setOpen(false)}
                   aria-current={active === item.id ? 'page' : undefined}
                   className={`flex items-center justify-between border-b border-border py-4 text-lg font-medium ${
                     active === item.id ? 'text-accent' : 'text-fg'
